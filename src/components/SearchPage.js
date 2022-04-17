@@ -6,6 +6,8 @@ import Bee from "../images/bee.png";
 import {useDispatch, useSelector} from "react-redux";
 import { setResults, setPages, setQuery } from "../store/resultsSlice";
 import { useNavigate } from "react-router-dom";
+import { Template } from "./Template";
+
 
 export const SearchPage = ({socket}) => {
 
@@ -28,13 +30,13 @@ export const SearchPage = ({socket}) => {
     const dispatch = useDispatch();
     let storage = useSelector(state => state.results);
     let results = storage['results'];
-
-    const navigate = useNavigate();
-
     useEffect(() => {
+        
         socket.on('results', results => {
-            //setResults(JSON.parse(results.data));
+          //setResults(JSON.parse(results.data));
+            console.log(results);
             if(results.data){
+               
                 dispatch(setResults(JSON.parse(results.data)));
                 dispatch(setPages({'number' : results.number_results, 'type' : results.search_type, currentPage: Number(results.offset) }));
                 setLoading(false);
@@ -51,56 +53,45 @@ export const SearchPage = ({socket}) => {
     }, [])
 
     return(
-        <div>
-            <div style={{display:"flex", justifyContent:"right", marginRight:"10px", marginTop:"10px"}}>
-                <div style={{border:"1px solid black", borderRadius:"8px", padding:"5px"}}>
-                    <b onClick={(e) => {
-                        e.preventDefault();
-                        navigate('/features');
-                    }}>Features</b>
-                </div>
-            </div>
-            <div style={{display:"block",justifyContent:"center", marginTop:"30px"}}>
+        <Template component={
+            <div>
                 
-                <div style={{textAlign:"center"}}>
-                    <div style={{display:"flex", justifyContent: "center"}}>
-                        <img alt="QueenB" style={{width:"75px"}} src={Bee} />
-                        <h1>QueenB</h1>
-                    </div>
-                    <i>Search engine for Level 2 Physics</i>
-                        
-                    <form onSubmit={formik.handleSubmit} style={{marginTop:"10px"}}>
-                        <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-                            <input id="query" name="query" type="text" style={{width:"75%", height:"25px", padding:"5px", boxShadow:"2px 1.5px 4px 0.5px #969696", borderRadius:"5px"}} autoFocus={true} value={formik.values.query} onChange={(e) => {
-                                if(e.target.value.length > 1){
-                                    e.preventDefault();
-                                    socket.emit('quick_search', e.target.value, 0)
-                                    dispatch(setQuery(e.target.value));
-                                }
-                                setTimeout(100);
-                                formik.setFieldValue('query', e.target.value);
-                                
-                            }} />
-                            <button type="submit" style={{backgroundColor:"white", border:"none", marginLeft:"5px"}}><BsSearch style={{fontSize:"25px"}}/></button>
-                        </div>
-                    </form>
-                    </div>
+                <div style={{display:"block",justifyContent:"center"}}>
                     
-                    <div style={{marginTop:"40px"}}>
-                        {loading ? <img alt="Loading" src={'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia2.giphy.com%2Fmedia%2FU6YxrKZ84AfppW48r4%2Fgiphy.gif&f=1&nofb=1'} /> :
-                        <>
-                            {results ? 
-                            <div>
-                                <SearchResults query={formik.values.query} socket={socket} /> 
+                    <div class="mt-4">
+                        <p class="text-xl ml-4">Welcome to QueenB, happy searching!</p> 
+                        <form onSubmit={formik.handleSubmit} class="mt-4">
+                            <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+                                <input id="query" name="query" type="text" class="h-10 w-4/5 xl:w-3/4 rounded-md p-1" autoFocus={true} value={formik.values.query} onChange={(e) => {
+                                    if(e.target.value.length > 1){
+                                        e.preventDefault();
+                                        socket.emit('quick_search', e.target.value, 0)
+                                        dispatch(setQuery(e.target.value));
+                                    }
+                                    setTimeout(100);
+                                    formik.setFieldValue('query', e.target.value);
+                                    
+                                }} />
+                                <button type="submit" style={{ border:"none", marginLeft:"5px"}}><BsSearch style={{fontSize:"25px"}}/></button>
                             </div>
-                            : null}
-                        </>
-                        }
-                    </div>
-                
-                
+                        </form>
+                        </div>
+                        
+                        <div class="mt-4">
+                            {loading ? <img alt="Loading" src={'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia2.giphy.com%2Fmedia%2FU6YxrKZ84AfppW48r4%2Fgiphy.gif&f=1&nofb=1'} /> :
+                            <>
+                                {results ? 
+                                <div>
+                                    <SearchResults query={formik.values.query} socket={socket} /> 
+                                </div>
+                                : null}
+                            </>
+                            }
+                            {formik.values.query ? null : <img alt="Loading" class="w-full lg:w-1/2 lg:m-auto" src={'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia2.giphy.com%2Fmedia%2FU6YxrKZ84AfppW48r4%2Fgiphy.gif&f=1&nofb=1'} />}
+                        </div>
+            </div>
         </div>
-    </div>
+        } />
     )
 
 }

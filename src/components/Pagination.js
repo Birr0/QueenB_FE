@@ -8,26 +8,36 @@ export const Pagination = ({socket, query, pages, setPages}) => {
         const pagination = Array.from(Array(x).keys());
         
         return(
-            pagination.map((page, key) => {
+            <div class="flex space-x-2 mt-5 mb-8">
+            {pagination.map((page, key) => {
                 while(page < 11){ // fix for more than 11 pages...
                     return(
-                        <button key={key} onClick={(e) => {
-                            e.preventDefault();
-                            
-                            pages.type === '0' ? 
-                            socket.emit('quick_search', query, page)  : socket.emit('search', query, page);
-                            window.scrollTo({
-                                top: 0, 
-                                left:0,
-                                behavior: 'smooth'
-                            });
-                        }}
-                        style={{borderRadius:'50%',  margin:"2px", width:"25px", textAlign:"center", border:"1px solid black", backgroundColor:"white"}} //add color for currentPage
-                        >{page + 1}</button>
+                        <div>
+
+                            <button key={key} 
+                                class="text-lg font-semibold border-gray-300 shadow-sm bg-white p-2 rounded-md" //add page highlight here...
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    
+                                    pages.type === '0' ? 
+                                    socket.emit('quick_search', query, page)  : socket.emit('search', query, page);
+                                    window.scrollTo({
+                                        top: 0, 
+                                        left:0,
+                                        behavior: 'smooth'
+                                    });
+                                }}
+                            //add color for currentPage
+                            >
+                                {page + 1}
+                            </button>
+                        </div>
                     )
                 }
                 
             })
+        }
+        </div>
         )
     }
     else{

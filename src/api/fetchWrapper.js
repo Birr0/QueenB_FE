@@ -1,20 +1,19 @@
 import {apiURL} from "./apiURL"
 
-const origin = 'http://localhost:3000'; //'https://www.thriftmarket.co.uk'; //'http://localhost:8000'
+const origin = '*';//'http://localhost:3000'; //'*';// //'https://www.thriftmarket.co.uk'; //'http://localhost:8000'
 
-const HEADERS = {'Access-Control-Allow-Credentials': true, "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json"};
+const HEADERS = {'Access-Control-Allow-Credentials': true, "Access-Control-Allow-Origin": origin, "Content-Type": "application/json"};
 
 export const Get = (endpoint) => {
-
     return(
-    fetch(apiURL + endpoint, {method:'GET', credentials: 'include',
+    fetch(apiURL + endpoint, {method:'GET',
         headers: HEADERS})
         .then(result => result.json())
         .then(resp => {
             console.log(resp);
             return resp;
         }
-                )
+        )
     )
     
 }
@@ -45,7 +44,6 @@ export const Put = (endpoint, payload) => {
 }
 
 export const Delete = (endpoint) => {   
-
     return(
         fetch(apiURL + endpoint, {method:'DELETE',credentials: 'include' ,
         headers: HEADERS})

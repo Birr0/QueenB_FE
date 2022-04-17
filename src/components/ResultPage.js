@@ -7,6 +7,7 @@ export const ResultPage = () => {
     const location = useLocation();
     const params = useParams();
 
+    
     useEffect(() => {
         socket.emit('get_resource', params.docID);
         socket.on('resource_response', result => {
@@ -15,7 +16,6 @@ export const ResultPage = () => {
     }, []);
 
     
-
     const [result, setResult] = useState();
     //const [loading, setLoading] = useState(false);
     
@@ -26,7 +26,7 @@ export const ResultPage = () => {
     }
     else{     
         return( 
-            result ? <LectureVideo doc={{result}} /> : null
+            result ? <LectureVideo doc={{result}}  /> : null
         )
     }   
 }
