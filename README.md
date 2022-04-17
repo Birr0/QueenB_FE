@@ -4,7 +4,7 @@
 
 
 #### Quick search
-<img src="/queen_b_fe/screenshots/quick_search.gif" />
+<img src="/screenshots/quick_search.gif" />
 
 
 #### Filtered search 
@@ -12,4 +12,4 @@
 
 Filter searches by module, lecturer and resource type.
 
-<img src="/queen_b_fe/screenshots/filtered_search.png" />
+<img src="/screenshots/filtered_search.png" />
