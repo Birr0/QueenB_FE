@@ -1,7 +1,6 @@
 import {apiURL} from "./apiURL"
 
-const origin = '*';//'http://localhost:3000'; //'*';// //'https://www.thriftmarket.co.uk'; //'http://localhost:8000'
-
+const origin = '*';
 const HEADERS = {'Access-Control-Allow-Credentials': true, "Access-Control-Allow-Origin": origin, "Content-Type": "application/json"};
 
 export const Get = (endpoint) => {
